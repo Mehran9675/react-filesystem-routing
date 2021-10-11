@@ -1,7 +1,7 @@
 {
-  "name": "@username/react-filesystem-router",
+  "name": "@mehranzhs/react-filesystem-router",
   "version": "0.0.0",
-  "description": "file system based routing for react.",
+  "description": "File-system based routing for React.",
   "main": "index.js",
   "git repository": "https://github.com/Mehran9675/react-filesystem-routing",
   "scripts": {
