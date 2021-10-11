@@ -72,7 +72,7 @@ const pathMaker = () => {
   );
 };
 
-if (isNotThefirstTimeRunning) {
+if (!isNotThefirstTimeRunning) {
   pathMaker();
   isNotThefirstTimeRunning = true;
 }
@@ -88,3 +88,5 @@ fs.watch("./src/pages", (event, filename) => {
     pathMaker();
   }
 });
+
+module.exports = pathMaker;
