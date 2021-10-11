@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "file system based routing for react.",
   "main": "index.js",
+  "git repository": "https://github.com/Mehran9675/react-filesystem-routing",
   "scripts": {
     "test": "test"
   },
@@ -14,6 +15,7 @@
   "author": "Mehran Zahiroddini",
   "license": "ISC",
   "dependencies": {
-    "node": "^16.10.0"
+    "node": "^16.10.0",
+    "prettier": "^2.4.1"
   }
 }
