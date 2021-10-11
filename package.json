@@ -1,0 +1,19 @@
+{
+  "name": "@username/react-filesystem-router",
+  "version": "0.0.0",
+  "description": "file system based routing for react.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "react",
+    "file-system",
+    "routing"
+  ],
+  "author": "Mehran Zahiroddini",
+  "license": "ISC",
+  "dependencies": {
+    "node": "^16.10.0"
+  }
+}
