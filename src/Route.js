@@ -1,5 +1,7 @@
-import { routes } from "./routeConfigs";
-import * as Pages from "./routes";
+const { configs_path } = require("../bin/index");
+const { routes } = require(configs_path + "/routeConfigs.js");
+const Pages = require(configs_path + "/route.js");
+
 import React, { useState, useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 

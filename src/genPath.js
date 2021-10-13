@@ -4,7 +4,7 @@ const chokidar = require("chokidar");
 
 let isNotThefirstTimeRunning = true;
 
-module.exports = (page_directory) => {
+module.exports = (page_directory, configs_directory) => {
   const pathMaker = () => {
     const readDirectory = (directory, includeDirectory) => {
       const pages = {};
@@ -107,7 +107,7 @@ module.exports = (page_directory) => {
       .join("")}};`;
 
     fs.writeFileSync(
-      "./node_modules/react-fs-router/dist/src/generated/routeConfigs.js",
+      configs_directory + "/routeConfigs.js",
       prettier.format(_config, { semi: false, parser: "babel" }),
       (err) => {
         if (err) return console.error(err);
@@ -115,7 +115,7 @@ module.exports = (page_directory) => {
     );
 
     fs.writeFileSync(
-      "./node_modules/react-fs-router/dist/src/generated/route.js",
+      configs_directory + "/route.js",
       prettier.format(_routes, { semi: false, parser: "babel" }),
       (err) => {
         if (err) return console.error(err);

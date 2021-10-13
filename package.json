@@ -5,7 +5,7 @@
   "main": "./bin/index.js",
   "git repository": "https://github.com/Mehran9675/react-filesystem-routing",
   "scripts": {
-    "test": "node ./bin/index.js -p ./pages",
+    "test": "node ./bin/index.js -p ./pages -c ./configs",
     "build": "npx -p typescript tsc"
   },
   "keywords": [
@@ -19,7 +19,6 @@
   "dependencies": {
     "chokidar": "^3.5.2",
     "commander": "^8.2.0",
-    "node": "^16.10.0",
     "react": "^17.0.2",
     "react-router-dom": "^5.3.0"
   },
@@ -28,7 +27,6 @@
     "rfr": "./bin/index.js"
   },
   "devDependencies": {
-    "@types/node": "^16.10.5",
     "typescript": "^4.4.4",
     "prettier": "^2.4.1"
   }
