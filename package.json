@@ -1,6 +1,6 @@
 {
   "name": "react-fs-router",
-  "version": "0.2.12",
+  "version": "0.2.13",
   "description": "File-system based routing for React.",
   "main": "./bin/index.js",
   "git repository": "https://github.com/Mehran9675/react-filesystem-routing",
