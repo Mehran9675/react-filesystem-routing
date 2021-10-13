@@ -1,3 +1,5 @@
+#!/usr/bin/env node index.js
+
 const genPath = require("../src/genPath/index.js");
 const { Command } = require("commander");
 const { version, name } = require("../package.json");
