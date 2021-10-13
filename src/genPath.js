@@ -6,8 +6,8 @@ let isNotThefirstTimeRunning = true;
 
 module.exports = (page_directory) => {
   const pathMaker = () => {
-    const readDirectory = (directory: string, includeDirectory?: boolean) => {
-      const pages: Record<string, any> = {};
+    const readDirectory = (directory, includeDirectory) => {
+      const pages = {};
       const read = fs.readdirSync(directory);
       read.forEach((page) => {
         const name = page.split(".")[0];
@@ -23,7 +23,7 @@ module.exports = (page_directory) => {
     };
     const pages = readDirectory(page_directory);
 
-    const readFileProperties = (filepath: string) => {
+    const readFileProperties = (filepath) => {
       const file = String(fs.readFileSync(page_directory + filepath)); // todo: put in try catch
       const component = file.match(/(export default .*)\w/g); //todo: export default function *
       const props = file.match(
@@ -51,15 +51,8 @@ module.exports = (page_directory) => {
       return result;
     };
 
-    const makeRouteObject = (filepath: string, filename: string) => {
-      const route: {
-        component?: string;
-        name?: string;
-        icon?: string;
-        index?: number;
-        path?: string;
-        file?: string;
-      } = {
+    const makeRouteObject = (filepath, filename) => {
+      const route = {
         component: null,
         name: null,
         icon: null,
@@ -82,14 +75,11 @@ module.exports = (page_directory) => {
       return route;
     };
 
-    const makePathsArray = (
-      paths: Record<string, any>,
-      prevPath?: boolean
-    ): Record<string, string>[] => {
+    const makePathsArray = (paths, prevPath) => {
       const result = [];
       for (const [file, path] of Object.entries(paths)) {
         if (typeof path === "string") {
-          const oj: Record<string, string> = { file };
+          const oj = { file };
           if (prevPath) oj.path = path.replace(page_directory, "");
           else oj.path = path;
           result.push(oj);
