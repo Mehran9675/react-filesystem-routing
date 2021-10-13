@@ -1,0 +1,15 @@
+{
+  // Change this to match your project
+  "include": ["src/**/*", "index.js"],
+  "exclude": ["dist/**/*"],
+  "compilerOptions": {
+    "allowJs": true,
+    "declaration": true,
+    // This compiler run should
+    // only output d.ts files
+    "emitDeclarationOnly": false,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "jsx": "react-jsx"
+  }
+}
