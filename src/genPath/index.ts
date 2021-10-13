@@ -4,7 +4,7 @@ const chokidar = require("chokidar");
 
 let isNotThefirstTimeRunning = true;
 
-const genPath = (page_directory) => {
+module.exports = (page_directory) => {
   const pathMaker = () => {
     const readDirectory = (directory: string, includeDirectory?: boolean) => {
       const pages: Record<string, any> = {};
@@ -159,5 +159,3 @@ const genPath = (page_directory) => {
       console.error("Error happened", error);
     });
 };
-
-module.exports = genPath;
