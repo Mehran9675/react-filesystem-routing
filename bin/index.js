@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const genPath = require("./dist/genPath");
+const genPath = require("../dist/genPath");
 const { Command } = require("commander");
 const { version, name } = require("../package.json");
 
