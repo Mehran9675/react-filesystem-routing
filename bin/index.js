@@ -1,6 +1,6 @@
-const genPath = require("./src/genPath/index.js");
+const genPath = require("../src/genPath/index.js");
 const { Command } = require("commander");
-const { version, name } = require("./package.json");
+const { version, name } = require("../package.json");
 
 const program = new Command();
 
