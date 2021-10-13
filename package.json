@@ -1,8 +1,8 @@
 {
   "name": "react-fs-router",
-  "version": "0.1.5",
+  "version": "0.2.2",
   "description": "File-system based routing for React.",
-  "main": "./dist/index.js",
+  "main": "./bin/index.js",
   "git repository": "https://github.com/Mehran9675/react-filesystem-routing",
   "types": "./dist/index.d.ts",
   "scripts": {
@@ -25,8 +25,8 @@
     "react-router-dom": "^5.3.0"
   },
   "bin": {
-    "react-fs-router": "./dist/index.js",
-    "rfr": "./dist/index.js"
+    "react-fs-router": "./bin/index.js",
+    "rfr": "./bin/index.js"
   },
   "devDependencies": {
     "@types/node": "^16.10.5",

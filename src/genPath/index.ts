@@ -117,7 +117,7 @@ const genPath = (page_directory) => {
       .join("")}};`;
 
     fs.writeFileSync(
-      "./src/config/_config.ts",
+      "./node_modules/react-fs-router/dist/src/generated/routeConfigs.js",
       prettier.format(_config, { semi: false, parser: "babel" }),
       (err) => {
         if (err) return console.error(err);
@@ -125,7 +125,7 @@ const genPath = (page_directory) => {
     );
 
     fs.writeFileSync(
-      "./src/config/_routes.ts",
+      "./node_modules/react-fs-router/dist/src/generated/route.js",
       prettier.format(_routes, { semi: false, parser: "babel" }),
       (err) => {
         if (err) return console.error(err);
@@ -137,18 +137,6 @@ const genPath = (page_directory) => {
     pathMaker();
     isNotThefirstTimeRunning = false;
   }
-
-  // let fsWait: boolean | any = false;
-  // fs.watch(page_, (event, filename) => {
-  //   if (filename) {
-  //     if (fsWait) return;
-  //     fsWait = setTimeout(() => {
-  //       fsWait = false;
-  //     }, 100);
-  //     console.log(`${filename} file Changed`);
-  //     pathMaker();
-  //   }
-  // });
   const watcher = chokidar.watch(page_directory, {
     ignored: /^\./,
     persistent: true,

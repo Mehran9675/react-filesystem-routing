@@ -1,7 +1,7 @@
 {
   // Change this to match your project
-  "include": ["src/**/*", "index.js"],
-  "exclude": ["dist/**/*"],
+  "include": ["src/**/*"],
+  "exclude": ["dist/**/*", "bin/index.js"],
   "compilerOptions": {
     "allowJs": true,
     "declaration": true,
