@@ -100,7 +100,6 @@ const pathMaker = () => {
     }
     return result;
   };
-  console.log(makePathsArray(pages));
 
   const routes = makePathsArray(pages).map((page) =>
     makeRouteObject(page.path, page.file)
