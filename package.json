@@ -1,13 +1,13 @@
 {
   "name": "react-fs-router",
-  "version": "0.2.6",
+  "version": "0.2.8",
   "description": "File-system based routing for React.",
   "main": "./bin/index.js",
   "git repository": "https://github.com/Mehran9675/react-filesystem-routing",
   "types": "./dist/index.d.ts",
   "scripts": {
     "test": "node index.js -p ./pages",
-    "build": "rm -rf ./dist & npx -p typescript tsc"
+    "build": "npx -p typescript tsc"
   },
   "keywords": [
     "react",
@@ -16,7 +16,7 @@
     "react-pages"
   ],
   "author": "Mehran Zahiroddini",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "chokidar": "^3.5.2",
     "commander": "^8.2.0",

@@ -8,7 +8,6 @@
     // This compiler run should
     // only output d.ts files
     "emitDeclarationOnly": false,
-    "outDir": "dist",
     "baseUrl": ".",
     "jsx": "react-jsx"
   }

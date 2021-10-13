@@ -1,7 +1,5 @@
-//@ts-ignore
-import { routes } from "dist/generated/routeConfigs";
-//@ts-ignore
-import * as Pages from "dist/generated/routes";
+import { routes } from "src/generated/routeConfigs"; //@ts-ignore
+import * as Pages from "src/generated/routes";
 import React, { ReactElement, ReactNode, useState, useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 
