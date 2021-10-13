@@ -171,3 +171,5 @@ const genPath = (page_directory) => {
       console.error("Error happened", error);
     });
 };
+
+module.exports = genPath;
