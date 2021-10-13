@@ -1,14 +1,14 @@
 const fs = require("fs");
 const prettier = require("prettier");
+const chokidar = require("chokidar");
 let isNotThefirstTimeRunning = true;
 
+const commands = process.argv.slice(2);
+if (commands.length < 1 || commands.length > 1)
+  throw new Error("Path to pages directory not found.");
+
+const page_directory = commands[0];
 const pathMaker = () => {
-  const commands = process.argv.slice(2);
-  if (commands.length < 1 || commands.length > 1)
-    throw new Error("Path to pages directory not found.");
-
-  const page_directory = commands[0];
-
   const readDirectory = (directory: string, includeDirectory?: boolean) => {
     const pages: Record<string, any> = {};
     const read = fs.readdirSync(directory);
@@ -73,7 +73,7 @@ const pathMaker = () => {
       `${filepath.match(/(\/)/g).length ? filepath : ""}${
         filename.includes("index")
           ? "/" + filename.replace("_", ".")
-          : "." + filename.split("_")
+          : "." + filename.split("_")[1]
       }`
     );
     if (component) route.component = component;
@@ -142,14 +142,35 @@ if (isNotThefirstTimeRunning) {
   isNotThefirstTimeRunning = false;
 }
 
-let fsWait: boolean | any = false;
-fs.watch("./src/pages", (event, filename) => {
-  if (filename) {
-    if (fsWait) return;
-    fsWait = setTimeout(() => {
-      fsWait = false;
-    }, 100);
-    console.log(`${filename} file Changed`);
-    pathMaker();
-  }
+// let fsWait: boolean | any = false;
+// fs.watch(page_, (event, filename) => {
+//   if (filename) {
+//     if (fsWait) return;
+//     fsWait = setTimeout(() => {
+//       fsWait = false;
+//     }, 100);
+//     console.log(`${filename} file Changed`);
+//     pathMaker();
+//   }
+// });
+const watcher = chokidar.watch(page_directory, {
+  ignored: /^\./,
+  persistent: true,
 });
+
+watcher
+  .on("add", function (path) {
+    pathMaker();
+    console.log("File", path, "has been added");
+  })
+  .on("change", function (path) {
+    pathMaker();
+    console.log("File", path, "has been changed");
+  })
+  .on("unlink", function (path) {
+    pathMaker();
+    console.log("File", path, "has been removed");
+  })
+  .on("error", function (error) {
+    console.error("Error happened", error);
+  });

@@ -1,6 +1,6 @@
 {
-  "name": "@mehranzhs/react-filesystem-router",
-  "version": "alpha 0.0.0",
+  "name": "react-filesystem-router",
+  "version": "0.0.0",
   "description": "File-system based routing for React.",
   "main": "index.js",
   "git repository": "https://github.com/Mehran9675/react-filesystem-routing",
@@ -10,11 +10,13 @@
   "keywords": [
     "react",
     "file-system",
-    "routing"
+    "routing",
+    "react-pages"
   ],
   "author": "Mehran Zahiroddini",
   "license": "ISC",
   "dependencies": {
+    "chokidar": "^3.5.2",
     "node": "^16.10.0",
     "prettier": "^2.4.1",
     "react": "^17.0.2",

@@ -1,11 +1,12 @@
 var fs = require("fs");
 var prettier = require("prettier");
+var chokidar = require("chokidar");
 var isNotThefirstTimeRunning = true;
+var commands = process.argv.slice(2);
+if (commands.length < 1 || commands.length > 1)
+    throw new Error("Path to pages directory not found.");
+var page_directory = commands[0];
 var pathMaker = function () {
-    var commands = process.argv.slice(2);
-    if (commands.length < 1 || commands.length > 1)
-        throw new Error("Path to pages directory not found.");
-    var page_directory = commands[0];
     var readDirectory = function (directory, includeDirectory) {
         var pages = {};
         var read = fs.readdirSync(directory);
@@ -57,7 +58,9 @@ var pathMaker = function () {
             index: 0,
             path: filepath
         };
-        var _a = readFileProperties((filepath.endsWith("/") ? filepath : "") + "/" + filename.replace("_", ".")), component = _a.component, name = _a.name, icon = _a.icon, index = _a.index;
+        var _a = readFileProperties("" + (filepath.match(/(\/)/g).length ? filepath : "") + (filename.includes("index")
+            ? "/" + filename.replace("_", ".")
+            : "." + filename.split("_")[1])), component = _a.component, name = _a.name, icon = _a.icon, index = _a.index;
         if (component)
             route.component = component;
         if (name)
@@ -116,15 +119,34 @@ if (isNotThefirstTimeRunning) {
     pathMaker();
     isNotThefirstTimeRunning = false;
 }
-var fsWait = false;
-fs.watch("./src/pages", function (event, filename) {
-    if (filename) {
-        if (fsWait)
-            return;
-        fsWait = setTimeout(function () {
-            fsWait = false;
-        }, 100);
-        console.log(filename + " file Changed");
-        pathMaker();
-    }
+// let fsWait: boolean | any = false;
+// fs.watch(page_, (event, filename) => {
+//   if (filename) {
+//     if (fsWait) return;
+//     fsWait = setTimeout(() => {
+//       fsWait = false;
+//     }, 100);
+//     console.log(`${filename} file Changed`);
+//     pathMaker();
+//   }
+// });
+var watcher = chokidar.watch(page_directory, {
+    ignored: /^\./,
+    persistent: true
+});
+watcher
+    .on("add", function (path) {
+    pathMaker();
+    console.log("File", path, "has been added");
+})
+    .on("change", function (path) {
+    pathMaker();
+    console.log("File", path, "has been changed");
+})
+    .on("unlink", function (path) {
+    pathMaker();
+    console.log("File", path, "has been removed");
+})
+    .on("error", function (error) {
+    console.error("Error happened", error);
 });
