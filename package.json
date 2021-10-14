@@ -2,10 +2,10 @@
   "name": "react-fs-router",
   "version": "0.2.14",
   "description": "File-system based routing for React.",
-  "main": "./bin/index.js",
+  "main": "./index.js",
   "git repository": "https://github.com/Mehran9675/react-filesystem-routing",
   "scripts": {
-    "test": "node ./bin/index.js -p ./pages -c ./configs",
+    "test": "node ./index.js -p ./pages -c ./configs",
     "build": "npx -p typescript tsc"
   },
   "keywords": [

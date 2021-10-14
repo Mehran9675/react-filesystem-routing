@@ -3,8 +3,9 @@ const prettier = require("prettier");
 const chokidar = require("chokidar");
 
 let isNotThefirstTimeRunning = true;
-
-module.exports = (page_directory, configs_directory) => {
+let configs_path;
+const genPath = (page_directory, configs_directory) => {
+  configs_path = configs_directory;
   const pathMaker = () => {
     const readDirectory = (directory, includeDirectory) => {
       const pages = {};
@@ -25,7 +26,10 @@ module.exports = (page_directory, configs_directory) => {
 
     const readFileProperties = (filepath) => {
       const file = String(fs.readFileSync(page_directory + filepath)); // todo: put in try catch
-      const component = file.match(/(export default .*)\w/g); //todo: export default function *
+      const component = file.match(
+        /((export default .*)|(default function .*))\w/g
+      );
+
       const props = file.match(
         /((name|icon|index):( |).*[^{}\[\]-_=\/\\\(\)\*&^%$#@!~`|?><,;:"'])/g
       );
@@ -37,7 +41,9 @@ module.exports = (page_directory, configs_directory) => {
       };
       if (!file) return result;
       if (component?.length) {
-        result.component = component[0].split("default")[1].trim();
+        if (component.includes("function"))
+          result.component = component[0].split("function")[1].trim();
+        else result.component = component[0].split("default")[1].trim();
       }
       if (props?.length) {
         const name = props.filter((match) => match.includes("name"));
@@ -149,3 +155,5 @@ module.exports = (page_directory, configs_directory) => {
       console.error("Error happened", error);
     });
 };
+
+module.exports = { genPath, configs_path };

@@ -1,7 +1,8 @@
 #!/usr/bin/env node
-const genPath = require("../src/genPath");
+
+const { genPath } = require("./genPath");
 const { Command } = require("commander");
-const { version, name } = require("../package.json");
+const { version, name } = require("./package.json");
 
 const program = new Command();
 
@@ -17,5 +18,3 @@ program.requiredOption(
 program.parse(process.argv);
 
 genPath(program.page, program.configs);
-
-module.exports = { configs_path: program.configs };
