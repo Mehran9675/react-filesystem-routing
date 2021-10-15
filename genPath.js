@@ -25,7 +25,8 @@ const genPath = (page_directory, configs_directory) => {
     const pages = readDirectory(page_directory);
 
     const readFileProperties = (filepath) => {
-      const file = String(fs.readFileSync(page_directory + filepath)); // todo: put in try catch
+      const file = String(fs.readFileSync(page_directory + filepath));
+      const not = ["default", "function", "export"];
       const component = file.match(
         /((export default .*)|(default function .*))\w/g
       );
@@ -39,11 +40,12 @@ const genPath = (page_directory, configs_directory) => {
         icon: null,
         index: null,
       };
+
       if (!file) return result;
       if (component?.length) {
-        if (component.includes("function"))
-          result.component = component[0].split("function")[1].trim();
-        else result.component = component[0].split("default")[1].trim();
+        result.component = component[0]
+          .split(" ")
+          .filter((match) => !not.includes(match))[0];
       }
       if (props?.length) {
         const name = props.filter((match) => match.includes("name"));
@@ -77,7 +79,7 @@ const genPath = (page_directory, configs_directory) => {
       if (icon) route.icon = icon;
       if (index) route.index = index;
       if (filepath) route.path = filepath;
-      if (filename) route.file = filename;
+      if (filename) route.file = filename.replace("_", ".");
       return route;
     };
 
@@ -140,15 +142,27 @@ const genPath = (page_directory, configs_directory) => {
 
   watcher
     .on("add", function (path) {
-      pathMaker();
+      try {
+        pathMaker();
+      } catch (e) {
+        console.log(e);
+      }
       console.log("File", path, "has been added");
     })
     .on("change", function (path) {
-      pathMaker();
+      try {
+        pathMaker();
+      } catch (e) {
+        console.log(e);
+      }
       console.log("File", path, "has been changed");
     })
     .on("unlink", function (path) {
-      pathMaker();
+      try {
+        pathMaker();
+      } catch (e) {
+        console.log(e);
+      }
       console.log("File", path, "has been removed");
     })
     .on("error", function (error) {
