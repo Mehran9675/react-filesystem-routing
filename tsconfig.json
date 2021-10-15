@@ -2,9 +2,6 @@
   "compilerOptions": {
     "allowJs": true,
     "declaration": true,
-    "emitDeclarationOnly": false,
-    "outDir": "./src",
-    "jsx": "react-jsx",
-    "target": "ES6"
+    "emitDeclarationOnly": true
   }
 }
