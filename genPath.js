@@ -3,9 +3,8 @@ const prettier = require("prettier");
 const chokidar = require("chokidar");
 
 let isNotThefirstTimeRunning = true;
-let configs_path;
-const genPath = (page_directory, configs_directory) => {
-  configs_path = configs_directory;
+
+const genPath = (page_directory, configs_directory, runOnce) => {
   const pathMaker = () => {
     const readDirectory = (directory, includeDirectory) => {
       const pages = {};
@@ -96,9 +95,9 @@ const genPath = (page_directory, configs_directory) => {
       return result;
     };
 
-    const routes = makePathsArray(pages).map((page) =>
-      makeRouteObject(page.path, page.file)
-    );
+    const routes = makePathsArray(pages)
+      .map((page) => makeRouteObject(page.path, page.file))
+      .sort((a, b) => b.index - a.index);
 
     const _config = `export const routes = ${JSON.stringify(routes)}`;
 
@@ -139,35 +138,36 @@ const genPath = (page_directory, configs_directory) => {
     ignored: /^\./,
     persistent: true,
   });
-
-  watcher
-    .on("add", function (path) {
-      try {
-        pathMaker();
-      } catch (e) {
-        console.log(e);
-      }
-      console.log("File", path, "has been added");
-    })
-    .on("change", function (path) {
-      try {
-        pathMaker();
-      } catch (e) {
-        console.log(e);
-      }
-      console.log("File", path, "has been changed");
-    })
-    .on("unlink", function (path) {
-      try {
-        pathMaker();
-      } catch (e) {
-        console.log(e);
-      }
-      console.log("File", path, "has been removed");
-    })
-    .on("error", function (error) {
-      console.error("Error happened", error);
-    });
+  if (!runOnce) {
+    watcher
+      .on("add", function (path) {
+        try {
+          pathMaker();
+        } catch (e) {
+          console.log(e);
+        }
+        console.log("File", path, "has been added");
+      })
+      .on("change", function (path) {
+        try {
+          pathMaker();
+        } catch (e) {
+          console.log(e);
+        }
+        console.log("File", path, "has been changed");
+      })
+      .on("unlink", function (path) {
+        try {
+          pathMaker();
+        } catch (e) {
+          console.log(e);
+        }
+        console.log("File", path, "has been removed");
+      })
+      .on("error", function (error) {
+        console.error("Error happened", error);
+      });
+  }
 };
 
-module.exports = { genPath, configs_path };
+module.exports = { genPath };
