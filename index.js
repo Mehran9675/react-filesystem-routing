@@ -22,4 +22,4 @@ program.option(
 
 program.parse();
 
-genPath(program.page, program.configs);
+genPath(program.page, program.configs, program.build);
