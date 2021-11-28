@@ -1,6 +1,6 @@
 # React-fs-router
 
-React-fs-router is a simple library that watches a user-provided route for changes in files and folders and generates two files in a user-provided route to be used with react-router.
+A cli library that watches a user-provided path for changes in files and folders and genarates two files to implement file-system based routing.
 
 ## Installation
 
@@ -16,18 +16,22 @@ npm install react-fs-router
 
 ## Usage
 
-The name of each file will be used as its path. The path for index files is "/". Each folder is treated as a route and each file inside a folder is treated as a subroute of its parent folder.
+The position of a file in the folder structure defines it's path. Files named index are treated as the root and default file in each folder.
+You can define a dynamic route by placing the name of the file in brackets. ie: [id].js ==> :id
 
-As of yet, react-fs-router runs via a command that must be added to the script section of your package.json file.
-The path to pages folder and the path for the output files must be passes via arguments as -p for input folder to watch and -c for the output files:
+| Arguments                       | Result                                                                                                        |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| -i \| --input <directory>       | Path to watch for changes. Required.                                                                          |
+| -o \| --output <output>         | Optional argument that takes a path to place output files in. Defaults to the input directory.                |
+| -ext \| --extention <extention> | Optional argument to change the file extension of the output files. Defaults to .js .                         |
+| -p \| --pageProperties [type]   | Optional boolean argument to disable generating page_properties file. Defaults to false.                      |
+| -b \| --build [type]            | Optional boolean argument that tells the program to run once. Defaults to false. Intended for build commands. |
 
 ```JSON
   "scripts": {
-     "rfr": "rfr -p <path to pages folder> -c <path to place output files>"
+     "rfr": "rfr -d <path to pages folder>"
   }
 ```
-
--b can be passed to tell the program to run only once. Intended to be used with the build script.
 
 Run the development server
 
@@ -35,23 +39,23 @@ Run the development server
 npm run start
 ```
 
-Then run react-fs-router
+Run react-fs-router
 
 ```bash
 npm run rfr
 ```
 
-The program will then generate two files one containing imports and re-exports of all the files inside the provided input path and one containing an array of objects per each file. The properties in the mentioned object are as follows:
+The program will then generate two files one containing imports and exports of all the files inside the provided path and one containing an array of objects per each file. The properties in the mentioned object are as follows:
 
 ```javascript
 
-component:// Name of the default export of the file
+component: // Name of the default export of the file
 name: // Name of the component mentioned in the file as // name: string
 icon: // Name of the icon mentioned in the file as // icon: string
 index: // A number by which the objects in this array are sorted by. mentioned in the file as // index: number
 file: // The name of the file this object is for
 path: // The path of this file in relation to its position in the folder structure. index files are always "/"
-}=
+
 ```
 
 Name, icon and index can be written in each file and react-fs-router will read and place them in the output file.
@@ -167,11 +171,22 @@ function Layout(Component) {
 }
 ```
 
+## Usage with Concurrently
+
+You can use [concurrently](https://www.npmjs.com/package/concurrently) to run rfr with react at the same time.
+
+```bash
+npm install -g concurrently
+```
+
+```bash
+concurrently --kill-others "npm run start" "npm run rfr"
+```
+
 ## Caveats
 
 1. Since all of the files are imported and re-exported, having two files with the same name as default export will cause an error.
-2. Running this package with the start command is not recommended as it interferes with the react script.
-3. This library is a work in progress and is consistantly being improved. Feel free to open issues in the github repo.
+2. Running this package along with the react start script is not recommended as it interferes with the react script. Consider using a package like concurrently for this purpose.
 
 ## License
 

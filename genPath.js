@@ -4,12 +4,47 @@ const chokidar = require("chokidar");
 
 let isNotThefirstTimeRunning = true;
 
-const genPath = (page_directory, configs_directory, runOnce) => {
+const genPath = (
+  page_directory,
+  configs_directory,
+  runOnce,
+  file_extention,
+  dont_output_fileProperties
+) => {
+  //main function
   const pathMaker = () => {
+    //parse parameters in path
+    const parsePageName = (fileName) => {
+      const isParam = fileName.includes("[") && fileName.includes("]");
+
+      const splitFileName = fileName.split("/");
+      if (splitFileName.length && isParam) {
+        const paramName = splitFileName[splitFileName.length - 1];
+        const paramNameWithoutExtention = paramName.split(".")[0];
+        const paramNameWithoutBraces = paramNameWithoutExtention
+          .replace("[", "")
+          .replace("]", "");
+        splitFileName[splitFileName.length - 1] = `:${paramNameWithoutBraces}`;
+        return splitFileName.join("/");
+      } else if (fileName === "index" && !isParam) return "";
+      else return fileName;
+    };
+
+    const parseFilePath = (filePath) => {
+      if (filePath.includes(":")) {
+        const splitPath = filePath.split("/");
+        const lastItemInPath = splitPath[splitPath.length - 1].replace(":", "");
+        splitPath[splitPath.length - 1] = `[${lastItemInPath}]`;
+        return splitPath.join("/");
+      } else return filePath;
+    };
+
+    //read page directory
     const readDirectory = (directory, includeDirectory) => {
       const pages = {};
       const read = fs.readdirSync(directory);
-      read.forEach((page) => {
+      const readFiltered = read.filter((file) => !file.startsWith("_"));
+      readFiltered.forEach((page) => {
         const name = page.split(".")[0];
         if (page.includes(".")) {
           pages[page.replace(".", "_")] = `${
@@ -21,6 +56,7 @@ const genPath = (page_directory, configs_directory, runOnce) => {
       });
       return pages;
     };
+
     const pages = readDirectory(page_directory);
 
     const readFileProperties = (filepath) => {
@@ -77,8 +113,9 @@ const genPath = (page_directory, configs_directory, runOnce) => {
       if (name) route.name = name;
       if (icon) route.icon = icon;
       if (index) route.index = index;
-      if (filepath) route.path = filepath;
+      if (filepath) route.path = parsePageName(filepath);
       if (filename) route.file = filename.replace("_", ".");
+
       return route;
     };
 
@@ -106,23 +143,33 @@ const genPath = (page_directory, configs_directory, runOnce) => {
         node?.component
           ? `import ${node.component} from "${
               process.env.PWD + page_directory.replace(".", "")
-            }${node.path === "/" ? "" : node.path}";`
+            }${node.path === "/" ? "" : parseFilePath(node.path)}";`
           : ""
       )
       .join("")} \n \n export{${routes
       .map((node) => (node?.component ? `${node.component},` : ""))
       .join("")}};`;
 
-    fs.writeFileSync(
-      configs_directory + "/routeConfigs.js",
-      prettier.format(_config, { semi: false, parser: "babel" }),
-      (err) => {
-        if (err) return console.error(err);
-      }
-    );
+    const parseFileExtention = (ext) => {
+      if (ext) {
+        if (ext.includes(".")) return ext;
+        else return "." + ext;
+      } else return ".js";
+    };
+    if (!dont_output_fileProperties) {
+      fs.writeFileSync(
+        (configs_directory || page_directory) +
+          `/_page-properties${parseFileExtention(file_extention)}`,
+        prettier.format(_config, { semi: false, parser: "babel" }),
+        (err) => {
+          if (err) return console.error(err);
+        }
+      );
+    }
 
     fs.writeFileSync(
-      configs_directory + "/route.js",
+      (configs_directory || page_directory) +
+        `/_routes${parseFileExtention(file_extention)}`,
       prettier.format(_routes, { semi: false, parser: "babel" }),
       (err) => {
         if (err) return console.error(err);
@@ -134,40 +181,40 @@ const genPath = (page_directory, configs_directory, runOnce) => {
     pathMaker();
     isNotThefirstTimeRunning = false;
   }
+
   const watcher = chokidar.watch(page_directory, {
-    ignored: /^\./,
-    persistent: true,
+    ignored: /^\.|\_/,
+    persistent: !runOnce,
   });
-  if (!runOnce) {
-    watcher
-      .on("add", function (path) {
-        try {
-          pathMaker();
-        } catch (e) {
-          console.log(e);
-        }
-        console.log("File", path, "has been added");
-      })
-      .on("change", function (path) {
-        try {
-          pathMaker();
-        } catch (e) {
-          console.log(e);
-        }
-        console.log("File", path, "has been changed");
-      })
-      .on("unlink", function (path) {
-        try {
-          pathMaker();
-        } catch (e) {
-          console.log(e);
-        }
-        console.log("File", path, "has been removed");
-      })
-      .on("error", function (error) {
-        console.error("Error happened", error);
-      });
-  }
+
+  watcher
+    .on("add", function (path) {
+      try {
+        pathMaker();
+      } catch (e) {
+        console.log(e);
+      }
+      console.log("File", path, "has been added");
+    })
+    .on("change", function (path) {
+      try {
+        pathMaker();
+      } catch (e) {
+        console.log(e);
+      }
+      console.log("File", path, "has been changed");
+    })
+    .on("unlink", function (path) {
+      try {
+        pathMaker();
+      } catch (e) {
+        console.log(e);
+      }
+      console.log("File", path, "has been removed");
+    })
+    .on("error", function (error) {
+      console.error("Error happened", error);
+    });
 };
 
 module.exports = { genPath };
