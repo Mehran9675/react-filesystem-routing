@@ -4,13 +4,7 @@ const chokidar = require("chokidar");
 
 let isNotThefirstTimeRunning = true;
 
-const genPath = (
-  page_directory,
-  configs_directory,
-  runOnce,
-  file_extention,
-  dont_output_fileProperties
-) => {
+const genPath = (page_directory, configs_directory, runOnce) => {
   //main function
   const pathMaker = () => {
     //parse parameters in path
@@ -156,20 +150,18 @@ const genPath = (
         else return "." + ext;
       } else return ".js";
     };
-    if (!dont_output_fileProperties) {
-      fs.writeFileSync(
-        (configs_directory || page_directory) +
-          `/_page-properties${parseFileExtention(file_extention)}`,
-        prettier.format(_config, { semi: false, parser: "babel" }),
-        (err) => {
-          if (err) return console.error(err);
-        }
-      );
-    }
+    fs.writeFileSync(
+      (configs_directory || page_directory) +
+        `/_page-properties${parseFileExtention(".js")}`,
+      prettier.format(_config, { semi: false, parser: "babel" }),
+      (err) => {
+        if (err) return console.error(err);
+      }
+    );
 
     fs.writeFileSync(
       (configs_directory || page_directory) +
-        `/_routes${parseFileExtention(file_extention)}`,
+        `/_routes${parseFileExtention(".js")}`,
       prettier.format(_routes, { semi: false, parser: "babel" }),
       (err) => {
         if (err) return console.error(err);
