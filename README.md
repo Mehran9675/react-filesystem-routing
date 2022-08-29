@@ -58,7 +58,7 @@ path: // The path of this file in relation to its position in the folder structu
 
 ```
 
-Name, icon and index can be written in each file and react-fs-router will read and place them in the output file.
+Name, icon and index can be written in each file as comments and react-fs-router will read and place them in the output file.
 
 ```javascript
 // name: Home
