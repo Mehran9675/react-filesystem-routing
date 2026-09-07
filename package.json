@@ -1,35 +1,103 @@
 {
   "name": "react-fs-router",
-  "version": "1.0.13",
-  "description": "File-system based routing for React.",
-  "main": "./index.js",
-  "git repository": "https://github.com/Mehran9675/react-filesystem-routing",
+  "version": "2.0.0",
+  "description": "Config-driven, adapter-pluggable file-system routing for React.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./render": {
+      "types": "./dist/render.d.ts",
+      "import": "./dist/render.js"
+    },
+    "./vite": {
+      "types": "./dist/vite.d.ts",
+      "import": "./dist/vite.js"
+    },
+    "./webpack": {
+      "types": "./dist/webpack.d.ts",
+      "import": "./dist/webpack.js"
+    },
+    "./adapters/react-router": {
+      "types": "./dist/adapters/react-router.d.ts",
+      "import": "./dist/adapters/react-router.js"
+    },
+    "./adapters/custom": {
+      "types": "./dist/adapters/custom.d.ts",
+      "import": "./dist/adapters/custom.js"
+    },
+    "./adapters/tanstack": {
+      "types": "./dist/adapters/tanstack.d.ts",
+      "import": "./dist/adapters/tanstack.js"
+    }
+  },
+  "bin": {
+    "react-fs-router": "./dist/cli.js",
+    "rfr": "./dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "node ./index.js -i ./pages -ext ts",
-    "build": "npx -p typescript tsc"
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "pretest": "npm run build",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "keywords": [
     "react",
     "file-system",
     "routing",
-    "react-pages"
+    "react-router",
+    "tanstack-router",
+    "vite",
+    "webpack"
   ],
   "author": "Mehran Zahiroddini",
   "license": "MIT",
-  "dependencies": {
-    "chokidar": "^3.5.2",
-    "commander": "^8.2.0"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mehran9675/react-filesystem-routing"
   },
-  "bin": {
-    "react-fs-router": "./index.js",
-    "rfr": "./index.js"
+  "dependencies": {
+    "chokidar": "^3.6.0",
+    "commander": "^12.1.0"
+  },
+  "peerDependencies": {
+    "react": ">=17",
+    "react-router": ">=7",
+    "@tanstack/react-router": ">=1"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-router": {
+      "optional": true
+    },
+    "@tanstack/react-router": {
+      "optional": true
+    }
   },
   "devDependencies": {
-    "typescript": "^4.4.4",
-    "prettier": "^2.4.1"
-  }
-  ,"repository": {
-    "type":"git",
-    "url":"https://github.com/Mehran9675/react-filesystem-routing"
+    "@tanstack/react-router": "^1.170.33",
+    "@testing-library/react": "^16.1.0",
+    "@types/node": "^22.10.2",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "esbuild-loader": "^4.2.2",
+    "jsdom": "^25.0.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router": "^7.0.0",
+    "typescript": "^5.7.2",
+    "vite": "^5.4.11",
+    "vitest": "^2.1.8",
+    "webpack": "^5.95.0"
   }
 }
