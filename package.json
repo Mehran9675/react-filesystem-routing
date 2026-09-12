@@ -1,6 +1,6 @@
 {
   "name": "react-fs-router",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Config-driven, adapter-pluggable file-system routing for React.",
   "type": "module",
   "main": "./dist/index.js",
