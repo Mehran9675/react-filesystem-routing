@@ -92,6 +92,47 @@ only the ones you actually use.
 
 Let's build a tiny app together. This is the whole setup:
 
+### ⚡ Vite plugin
+
+```ts
+// vite.config.ts
+import { reactFsRouter } from "react-fs-router/vite";
+
+export default {
+  plugins: [reactFsRouter({ userConfig: { pages: "src/pages" } })],
+};
+```
+
+### 📦 Webpack plugin
+
+```js
+// webpack.config.js
+const { ReactFsRouterWebpackPlugin } = require("react-fs-router/webpack");
+
+module.exports = {
+  plugins: [new ReactFsRouterWebpackPlugin({ userConfig: { pages: "src/pages" } })],
+};
+```
+
+### CLI (any toolchain)
+
+```bash
+npx rfr --input src/pages --output src --adapter react-router
+```
+
+Options:
+
+| Flag | Description |
+| --- | --- |
+| `-i, --input <dir>` | Pages directory (overrides config) |
+| `-c, --config <file>` | Config file path (default `rfr.config.ts`) |
+| `-o, --output <dir>` | Output directory (overrides config) |
+| `-a, --adapter <name>` | Routing adapter to use |
+| `-w, --watch` | Watch and regenerate on changes |
+| `-b, --build` | Generate once and exit (default) |
+
+
+
 ### 1. Create a config file
 
 ```ts
@@ -674,50 +715,6 @@ import { defineAdapter } from "react-fs-router";
 defineAdapter("my-router", ({ routes }) => <MyRoutes routes={routes} />);
 ```
 
----
-
-## 🛠️ CLI & plugins
-
-### CLI (any toolchain)
-
-```bash
-npx rfr --input src/pages --output src --adapter react-router
-```
-
-Options:
-
-| Flag | Description |
-| --- | --- |
-| `-i, --input <dir>` | Pages directory (overrides config) |
-| `-c, --config <file>` | Config file path (default `rfr.config.ts`) |
-| `-o, --output <dir>` | Output directory (overrides config) |
-| `-a, --adapter <name>` | Routing adapter to use |
-| `-w, --watch` | Watch and regenerate on changes |
-| `-b, --build` | Generate once and exit (default) |
-
-### ⚡ Vite plugin
-
-```ts
-// vite.config.ts
-import { reactFsRouter } from "react-fs-router/vite";
-
-export default {
-  plugins: [reactFsRouter({ userConfig: { pages: "src/pages" } })],
-};
-```
-
-### 📦 Webpack plugin
-
-```js
-// webpack.config.js
-const { ReactFsRouterWebpackPlugin } = require("react-fs-router/webpack");
-
-module.exports = {
-  plugins: [new ReactFsRouterWebpackPlugin({ userConfig: { pages: "src/pages" } })],
-};
-```
-
----
 
 ## 📜 License
 
